@@ -1,20 +1,23 @@
 package graph.search;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
 
 public class BreadthFirstSearch {
 	// runtime: |V| + |E|
-	// assume graph is connected and starts with node 0
 	public static int[] runBFS(ArrayList<ArrayList<Integer>> directedGraph) {
 		int[] parents = new int[directedGraph.size()];
 		int[] dists = new int[directedGraph.size()];
 		boolean[] visited = new boolean[directedGraph.size()];
 
+		Arrays.fill(dists, -1);
+
 		Queue<Integer> queue = new LinkedList<>();
 
 		queue.offer(0);
+		dists[0] = 0;
 		visited[0] = true;
 
 		while (!queue.isEmpty()) {

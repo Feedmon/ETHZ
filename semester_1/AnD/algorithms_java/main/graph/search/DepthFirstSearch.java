@@ -1,18 +1,20 @@
 package graph.search;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class DepthFirstSearch {
 
 	private static int time;
 
+	private static ArrayList<Integer> ret;
+
 	// can be done with stack instead of recursive
 	// adjList runtime: |V| + |E|
 	// adjMatrix runtime: n*n
-	public static void runDFS(ArrayList<ArrayList<Integer>> adjList) {
+	public static ArrayList<Integer> runDFS(ArrayList<ArrayList<Integer>> adjList) {
 		int[] preTime = new int[adjList.size()];
 		int[] postTime = new int[adjList.size()];
+		ret = new ArrayList<>();
 
 		time = 1;
 
@@ -22,8 +24,7 @@ public class DepthFirstSearch {
 			}
 		}
 
-		System.out.println(Arrays.toString(preTime));
-		System.out.println(Arrays.toString(postTime));
+		return ret;
 	}
 
 	private static void visit(int node, ArrayList<ArrayList<Integer>> adjList, int[] preTime, int[] postTime) {
@@ -35,6 +36,7 @@ public class DepthFirstSearch {
 			}
 		}
 
+		ret.add(0,node);
 		postTime[node] = time++;
 	}
 }

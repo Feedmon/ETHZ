@@ -2,13 +2,68 @@ package sort;
 
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.Random;
 import java.util.stream.Stream;
 
-import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+
 public class SortTest {
+
+	@Test
+	void testAlreadySorted() {
+		int[] arr = {1, 2, 3, 4, 5};
+		MergeSort.mergeSort(arr);
+		assertArrayEquals(new int[]{1, 2, 3, 4, 5}, arr);
+	}
+
+	@Test
+	void testReverseSorted() {
+		int[] arr = {5, 4, 3, 2, 1};
+		MergeSort.mergeSort(arr);
+		assertArrayEquals(new int[]{1, 2, 3, 4, 5}, arr);
+	}
+
+	@Test
+	void testWithDuplicates() {
+		int[] arr = {2, 2, 2, 1, 1, 5, 5, 5};
+		MergeSort.mergeSort(arr);
+		assertArrayEquals(new int[]{1, 1, 2, 2, 2, 5, 5, 5}, arr);
+	}
+
+	@Test
+	void testEmptyArray() {
+		int[] arr = {};
+		MergeSort.mergeSort(arr);
+		assertArrayEquals(new int[]{}, arr);
+	}
+
+	@Test
+	void testSingleElement() {
+		int[] arr = {10};
+		MergeSort.mergeSort(arr);
+		assertArrayEquals(new int[]{10}, arr);
+	}
+
+	@Test
+	void testRandomArray() {
+		Random rand = new Random();
+		int[] arr = new int[10];
+		for (int i = 0; i < 10; i++) {
+			arr[i] = rand.nextInt(100);
+		}
+
+		int[] expected = Arrays.copyOf(arr, arr.length);
+
+		Arrays.sort(expected);
+
+		MergeSort.mergeSort(arr);
+
+		assertArrayEquals(expected, arr);
+	}
 
 	@ParameterizedTest
 	@MethodSource("provideIntArraysToSort")
@@ -18,7 +73,7 @@ public class SortTest {
 
 		MergeSort.mergeSort(inputArray);
 
-        Assertions.assertArrayEquals(sortedArray, inputArray);
+        assertArrayEquals(sortedArray, inputArray);
 	}
 
 	@ParameterizedTest
@@ -30,7 +85,7 @@ public class SortTest {
 
 		sortHeap(new HeapStore<>(unsortedArray.length), unsortedArray);
 
-        Assertions.assertArrayEquals(sortedArray, unsortedArray);
+        assertArrayEquals(sortedArray, unsortedArray);
 	}
 
 	@ParameterizedTest
@@ -42,7 +97,7 @@ public class SortTest {
 
 		sortHeap(new HeapStore<Integer>(Comparator.reverseOrder(), unsortedArray.length), unsortedArray);
 
-        Assertions.assertArrayEquals(sortedArray, unsortedArray);
+        assertArrayEquals(sortedArray, unsortedArray);
 	}
 
 	private void sortHeap(HeapStore<Integer> heapStore, Integer[] input) {
@@ -63,7 +118,7 @@ public class SortTest {
 
 		HeapSort.inplaceHeapSort(inputArray);
 
-        Assertions.assertArrayEquals(sortedArray, inputArray);
+        assertArrayEquals(sortedArray, inputArray);
 	}
 
 

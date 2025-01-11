@@ -1,8 +1,9 @@
 package graph.shortestPaths.oneToAll;
 
 import static org.junit.Assert.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.ArrayList;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.Test;
@@ -41,6 +42,61 @@ public class BellmanFordTest {
 		String message = assertThrows(IllegalArgumentException.class,() -> BellmanFord.getMinDistance(0, 4, 5, edges)).getMessage();
 		assertEquals("Negative cycle with nodes: [0, 1] detected", message);
 	}
+
+	@Test
+	void testSimpleGraph() {
+		ArrayList<Edge> edges = new ArrayList<>();
+		edges.add(new Edge(0, 1, 5));
+		edges.add(new Edge(0, 2, 2));
+		edges.add(new Edge(1, 2, 1));
+		edges.add(new Edge(1, 3, 3));
+		edges.add(new Edge(2, 3, 2));
+
+		int numVertices = 4;
+		int source = 0;
+
+		int[] distances = BellmanFord.runBellmanFord(source, numVertices, edges.toArray(Edge[]::new));
+
+		int[] expected = {0, 5, 2, 4};
+
+		assertNotNull(distances, "Distances array should not be null");
+		assertArrayEquals(expected, distances, "Distances do not match the expected values");
+	}
+
+	@Test
+	void testNegativeEdgeNoCycle() {
+		ArrayList<Edge> edges = new ArrayList<>();
+		edges.add(new Edge(0, 1, 4));
+		edges.add(new Edge(0, 2, 5));
+		edges.add(new Edge(1, 2, -2));
+
+		int numVertices = 3;
+		int source = 0;
+
+		int[] distances = BellmanFord.runBellmanFord(source, numVertices, edges.toArray(Edge[]::new));
+
+		int[] expected = {0, 4, 2};
+
+		assertNotNull(distances);
+		assertArrayEquals(expected, distances, "Distances do not match for negative edge test");
+	}
+
+	@Test
+	void testDisconnectedGraph() {
+		ArrayList<Edge> edges = new ArrayList<>();
+		edges.add(new Edge(0, 1, 4));
+
+		int numVertices = 3;
+		int source = 0;
+
+		int[] distances = BellmanFord.runBellmanFord(source, numVertices, edges.toArray(Edge[]::new));
+
+		assertNotNull(distances);
+		assertEquals(0, distances[0]);
+		assertEquals(4, distances[1]);
+		assertEquals(Integer.MAX_VALUE, distances[2]);
+	}
+
 
 	private static Stream<Arguments> provideMinTime() {
 		return Stream.of(

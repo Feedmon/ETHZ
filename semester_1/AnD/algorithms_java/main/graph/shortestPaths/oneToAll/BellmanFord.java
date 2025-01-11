@@ -6,6 +6,10 @@ public class BellmanFord {
 
 	// runtime n*m
 	public static int getMinDistance(int startNode, int targetNode, int nodes, Edge[] edges) {
+		return runBellmanFord(startNode, nodes, edges)[targetNode];
+	}
+
+	public static int[] runBellmanFord(int startNode, int nodes, Edge[] edges){
 		int[] distances = new int[nodes];
 
 		for (int i = 0; i < nodes; i++) {
@@ -30,6 +34,6 @@ public class BellmanFord {
 			}
 		}
 
-		return distances[targetNode];
+		return distances;
 	}
 }

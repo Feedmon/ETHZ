@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.ArrayList;
 import java.util.stream.Stream;
 
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -12,6 +13,82 @@ import org.junit.jupiter.params.provider.MethodSource;
 import graph.util.Edge;
 
 public class DijkstraTest {
+
+	@Test
+	void testLineGraph() {
+		ArrayList<ArrayList<Edge>> adjList = new ArrayList<>(4);
+
+		for (int i = 0; i < 4; i++) {
+			adjList.add(new ArrayList<>());
+		}
+
+		adjList.get(0).add(new Edge(0,1,1));
+		adjList.get(1).add(new Edge(1,2,1));
+		adjList.get(2).add(new Edge(2,3,1));
+
+		assertEquals(0, Dijkstra.getMinDistance(adjList,0,0));
+		assertEquals(1, Dijkstra.getMinDistance(adjList,0,1));
+		assertEquals(2, Dijkstra.getMinDistance(adjList,0,2));
+		assertEquals(3, Dijkstra.getMinDistance(adjList,0,3));
+	}
+
+	@Test
+	void testStarGraph() {
+		ArrayList<ArrayList<Edge>> adjList = new ArrayList<>(5);
+
+		for (int i = 0; i < 5; i++) {
+			adjList.add(new ArrayList<>());
+		}
+
+		adjList.get(0).add(new Edge(0,1,10));
+		adjList.get(0).add(new Edge(0,2,20));
+		adjList.get(0).add(new Edge(0,3,5));
+
+		assertEquals(0, Dijkstra.getMinDistance(adjList,0,0));
+		assertEquals(10, Dijkstra.getMinDistance(adjList,0,1));
+		assertEquals(20, Dijkstra.getMinDistance(adjList,0,2));
+		assertEquals(5, Dijkstra.getMinDistance(adjList,0,3));
+		assertEquals(Integer.MAX_VALUE, Dijkstra.getMinDistance(adjList,0,4));
+	}
+
+	@Test
+	void testMoreComplexGraph() {
+		ArrayList<ArrayList<Edge>> adjList = new ArrayList<>(4);
+
+		for (int i = 0; i < 4; i++) {
+			adjList.add(new ArrayList<>());
+		}
+
+		adjList.get(0).add(new Edge(0,1,1));
+		adjList.get(0).add(new Edge(0,2,4));
+		adjList.get(1).add(new Edge(1,2,2));
+		adjList.get(1).add(new Edge(1,3,5));
+		adjList.get(2).add(new Edge(2,3,1));
+
+		assertEquals(0, Dijkstra.getMinDistance(adjList,0,0));
+		assertEquals(1, Dijkstra.getMinDistance(adjList,0,1));
+		assertEquals(3, Dijkstra.getMinDistance(adjList,0,2));
+		assertEquals(4, Dijkstra.getMinDistance(adjList,0,3));
+	}
+
+	@Test
+	void testUndirectedUsage() {
+		ArrayList<ArrayList<Edge>> adjList = new ArrayList<>(3);
+
+		for (int i = 0; i < 3; i++) {
+			adjList.add(new ArrayList<>());
+		}
+
+		adjList.get(0).add(new Edge(0,1,1));
+		adjList.get(1).add(new Edge(1,0,1));
+		adjList.get(1).add(new Edge(1,2,2));
+		adjList.get(2).add(new Edge(2,1,2));
+
+		assertEquals(0, Dijkstra.getMinDistance(adjList,0,0));
+		assertEquals(1, Dijkstra.getMinDistance(adjList,0,1));
+		assertEquals(3, Dijkstra.getMinDistance(adjList,0,2));
+	}
+
 
 	@ParameterizedTest
 	@MethodSource("provideMinTime")
