@@ -9,7 +9,8 @@ import graph.util.UnionFind;
 
 public class Kruskal {
 
-	// runtime: O(|E| * log(|E|) + |V| * log(|V|)) if many edges -> prim is more efficient
+	// runtime: O((|E| * log(|E|)) + (|V| * log(|V|))) if many edges -> prim is more efficient
+	// 				sort			  union
 	public static int minCost(int nodes, Edge[] edges) {
 		Arrays.sort(edges);
 
@@ -27,8 +28,8 @@ public class Kruskal {
 		return costs.stream().mapToInt(edge -> edge.distance).sum();
 	}
 
-	// notably slower for large graphs as the above one, but needed if ArrayList is not allowed to be used
-	public static int minCostPoorMan(int nodes, Edge[] edges) {
+	// slightly more complex but faster because of path halving
+	public static int minCostImprovedUnionFind(int nodes, Edge[] edges) {
 		Arrays.sort(edges);
 
 		ImprovedUnionFind unionFind = new ImprovedUnionFind(nodes);

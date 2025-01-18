@@ -35,8 +35,8 @@ public class MSTTest {
         Edge[] edgesNoDupes = extractEdges(graph, false);
         Edge[] edgesWithDupes = extractEdges(graph, true);
         assertEquals(edgesNoDupes.length * 2, edgesWithDupes.length);
-        assertEquals(expectedtMSTWeight, Kruskal.minCostPoorMan(graph.size(), edgesNoDupes));
-        assertEquals(expectedtMSTWeight, Kruskal.minCostPoorMan(graph.size(), edgesWithDupes));
+        assertEquals(expectedtMSTWeight, Kruskal.minCostImprovedUnionFind(graph.size(), edgesNoDupes));
+        assertEquals(expectedtMSTWeight, Kruskal.minCostImprovedUnionFind(graph.size(), edgesWithDupes));
     }
 
     private Edge[] extractEdges(ArrayList<ArrayList<Edge>> graph, boolean duplicates){
