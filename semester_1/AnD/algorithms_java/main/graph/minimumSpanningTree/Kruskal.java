@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import graph.util.Edge;
-import graph.util.PoorManUnionFind;
+import graph.util.ImprovedUnionFind;
 import graph.util.UnionFind;
 
 public class Kruskal {
@@ -31,7 +31,7 @@ public class Kruskal {
 	public static int minCostPoorMan(int nodes, Edge[] edges) {
 		Arrays.sort(edges);
 
-		PoorManUnionFind unionFind = new PoorManUnionFind(nodes);
+		ImprovedUnionFind unionFind = new ImprovedUnionFind(nodes);
 
 		ArrayList<Edge> costs = new ArrayList<>();
 		// int costs = 0;
