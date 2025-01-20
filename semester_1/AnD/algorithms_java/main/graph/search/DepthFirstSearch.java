@@ -1,6 +1,11 @@
 package graph.search;
 
+import graph.util.Edge;
+import graph.util.ZHK;
+
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.PriorityQueue;
 
 public class DepthFirstSearch {
 
@@ -38,5 +43,25 @@ public class DepthFirstSearch {
 
 		ret.add(0,node);
 		postTime[node] = time++;
+	}
+
+
+	public static Edge boruvkaMinEdge(ZHK zhk, ArrayList<ArrayList<Edge>> graph){
+		boolean[] memberOfZHK = new boolean[graph.size()];
+
+		for (Integer member : zhk.members) {
+			memberOfZHK[member] = true;
+		}
+
+		PriorityQueue<Edge> minHeap = new PriorityQueue<>(Comparator.comparingInt(edge -> edge.distance));
+		for (Integer member : zhk.members) {
+			for (Edge edge : graph.get(member)) {
+				if (memberOfZHK[edge.fromNode] != memberOfZHK[edge.toNode]) {
+					minHeap.add(edge);
+				}
+			}
+		}
+
+		return minHeap.isEmpty() ? null : minHeap.poll();
 	}
 }
